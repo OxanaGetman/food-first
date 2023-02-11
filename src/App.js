@@ -10,7 +10,7 @@ function App() {
 
   const [mySearch, setMySearch] = useState("");
   const [myRecipes, setMyRecipes] = useState([]);
-  const [wordSubmitted, setWordSubmitted] = useState("avocado")
+  const [wordSubmitted, setWordSubmitted] = useState("avocado");
 
   const myRecipeSearch = (e) => {
     setMySearch (e.target.value)
@@ -21,10 +21,11 @@ function App() {
     setWordSubmitted(mySearch)
   }
 
-  const getRecipe = useCallback( async () => {
+  const getRecipe = useCallback(async () => {
   const response = await fetch (`https://api.edamam.com/api/recipes/v2?type=public&q=${wordSubmitted}&app_id=${MY_ID}&app_key=${MY_KEY}`);
   const data = await response.json();
   setMyRecipes(data.hits)
+  console.log(data.hits)
   }, [wordSubmitted])
 
   useEffect(() => {
@@ -50,8 +51,10 @@ function App() {
         </form>
       </div>
 
-      {myRecipes.map(element => (
-        <MyRecipeComponent label={element.recipe.label}
+      {myRecipes.map((element, index) => (
+        <MyRecipeComponent
+        key={index}
+        label={element.recipe.label}
         image={element.recipe.image}
         calories={element.recipe.calories}
         ingredients={element.recipe.ingredientLines}
